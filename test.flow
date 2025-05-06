@@ -1,0 +1,4 @@
+// test.flow - Basic placeholder
+5 |> print();
+result = 10 + 2;
+result |> print();

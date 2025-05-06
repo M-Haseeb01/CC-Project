@@ -1,0 +1,1637 @@
+State 5 conflicts: 1 shift/reduce
+State 8 conflicts: 7 shift/reduce
+State 20 conflicts: 1 shift/reduce
+State 35 conflicts: 1 shift/reduce
+State 36 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: statement_list
+
+    2 statement_list: ε
+    3               | statement_list statement
+
+    4 statement: assignment_statement optional_semicolon
+    5          | function_definition
+    6          | pipeline_expression optional_semicolon
+    7          | expression optional_semicolon
+    8          | if_statement
+    9          | for_statement
+   10          | return_statement optional_semicolon
+   11          | block
+
+   12 optional_semicolon: ε
+   13                   | T_SEMICOLON
+
+   14 block: T_LBRACE statement_list T_RBRACE
+
+   15 assignment_statement: T_IDENTIFIER T_ASSIGN expression
+
+   16 function_definition: T_FUNC T_IDENTIFIER T_LPAREN param_list_opt T_RPAREN block
+
+   17 param_list_opt: ε
+   18               | param_list
+
+   19 param_list: non_empty_param_list
+
+   20 non_empty_param_list: T_IDENTIFIER
+   21                     | non_empty_param_list T_COMMA T_IDENTIFIER
+
+   22 expression: term
+   23           | expression additive_op term
+   24           | expression comparison_op term
+   25           | expression logical_and_op term
+   26           | expression logical_or_op term
+
+   27 term: factor
+   28     | term multiplicative_op factor
+
+   29 factor: primary_expression
+   30       | T_NOT factor
+   31       | T_MINUS factor
+
+   32 primary_expression: T_NUMBER
+   33                   | T_IDENTIFIER
+   34                   | T_LPAREN expression T_RPAREN
+   35                   | function_call
+   36                   | range_call
+   37                   | print_operation
+
+   38 function_call: T_IDENTIFIER T_LPAREN arg_list_opt T_RPAREN
+
+   39 arg_list_opt: ε
+   40             | arg_list
+
+   41 arg_list: non_empty_arg_list
+
+   42 non_empty_arg_list: expression
+   43                   | non_empty_arg_list T_COMMA expression
+
+   44 range_call: T_RANGE T_LPAREN expression T_COMMA expression T_RPAREN
+
+   45 pipeline_expression: primary_expression T_PIPE piped_operation
+   46                    | pipeline_expression T_PIPE piped_operation
+
+   47 piped_operation: function_call
+   48                | if_statement
+   49                | T_FOR T_EACH block
+   50                | T_PRINT T_LPAREN T_RPAREN
+
+   51 print_operation: T_PRINT T_LPAREN expression T_RPAREN
+
+   52 if_statement: T_IF expression block
+   53             | T_IF expression block T_ELSE block
+
+   54 for_statement: T_FOR range_call T_EACH block
+
+   55 return_statement: T_RETURN expression
+   56                 | T_RETURN
+
+   57 comparison_op: T_EQ
+   58              | T_NEQ
+   59              | T_LT
+   60              | T_GT
+   61              | T_LTE
+   62              | T_GTE
+
+   63 additive_op: T_PLUS
+   64            | T_MINUS
+
+   65 multiplicative_op: T_MULTIPLY
+   66                  | T_DIVIDE
+
+   67 logical_and_op: T_AND
+
+   68 logical_or_op: T_OR
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    T_NUMBER <ival> (258) 32
+    T_IDENTIFIER <sval> (259) 15 16 20 21 33 38
+    T_PRINT <sval> (260) 50 51
+    T_FUNC (261) 16
+    T_RETURN (262) 55 56
+    T_IF (263) 52 53
+    T_ELSE (264) 53
+    T_FOR (265) 49 54
+    T_EACH (266) 49 54
+    T_RANGE (267) 44
+    T_PIPE (268) 45 46
+    T_ASSIGN (269) 15
+    T_PLUS (270) 63
+    T_MINUS (271) 31 64
+    T_MULTIPLY (272) 65
+    T_DIVIDE (273) 66
+    T_EQ (274) 57
+    T_NEQ (275) 58
+    T_LT (276) 59
+    T_GT (277) 60
+    T_LTE (278) 61
+    T_GTE (279) 62
+    T_AND (280) 67
+    T_OR (281) 68
+    T_NOT (282) 30
+    T_LPAREN (283) 16 34 38 44 50 51
+    T_RPAREN (284) 16 34 38 44 50 51
+    T_LBRACE (285) 14
+    T_RBRACE (286) 14
+    T_COMMA (287) 21 43 44
+    T_SEMICOLON (288) 13
+    T_IFX (289)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (35)
+        on left: 0
+    program <node> (36)
+        on left: 1
+        on right: 0
+    statement_list <node> (37)
+        on left: 2 3
+        on right: 1 3 14
+    statement <node> (38)
+        on left: 4 5 6 7 8 9 10 11
+        on right: 3
+    optional_semicolon (39)
+        on left: 12 13
+        on right: 4 6 7 10
+    block <node> (40)
+        on left: 14
+        on right: 11 16 49 52 53 54
+    assignment_statement <node> (41)
+        on left: 15
+        on right: 4
+    function_definition <node> (42)
+        on left: 16
+        on right: 5
+    param_list_opt <generic_array> (43)
+        on left: 17 18
+        on right: 16
+    param_list <generic_array> (44)
+        on left: 19
+        on right: 18
+    non_empty_param_list <generic_array> (45)
+        on left: 20 21
+        on right: 19 21
+    expression <node> (46)
+        on left: 22 23 24 25 26
+        on right: 7 15 23 24 25 26 34 42 43 44 51 52 53 55
+    term <node> (47)
+        on left: 27 28
+        on right: 22 23 24 25 26 28
+    factor <node> (48)
+        on left: 29 30 31
+        on right: 27 28 30 31
+    primary_expression <node> (49)
+        on left: 32 33 34 35 36 37
+        on right: 29 45
+    function_call <node> (50)
+        on left: 38
+        on right: 35 47
+    arg_list_opt <generic_array> (51)
+        on left: 39 40
+        on right: 38
+    arg_list <generic_array> (52)
+        on left: 41
+        on right: 40
+    non_empty_arg_list <generic_array> (53)
+        on left: 42 43
+        on right: 41 43
+    range_call <node> (54)
+        on left: 44
+        on right: 36 54
+    pipeline_expression <node> (55)
+        on left: 45 46
+        on right: 6 46
+    piped_operation <node> (56)
+        on left: 47 48 49 50
+        on right: 45 46
+    print_operation <node> (57)
+        on left: 51
+        on right: 37
+    if_statement <node> (58)
+        on left: 52 53
+        on right: 8 48
+    for_statement <node> (59)
+        on left: 54
+        on right: 9
+    return_statement <node> (60)
+        on left: 55 56
+        on right: 10
+    comparison_op <op_type> (61)
+        on left: 57 58 59 60 61 62
+        on right: 24
+    additive_op <op_type> (62)
+        on left: 63 64
+        on right: 23
+    multiplicative_op <op_type> (63)
+        on left: 65 66
+        on right: 28
+    logical_and_op <op_type> (64)
+        on left: 67
+        on right: 25
+    logical_or_op <op_type> (65)
+        on left: 68
+        on right: 26
+
+
+State 0
+
+    0 $accept: • program $end
+
+    $default  reduce using rule 2 (statement_list)
+
+    program         go to state 1
+    statement_list  go to state 2
+
+
+State 1
+
+    0 $accept: program • $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 program: statement_list •
+    3 statement_list: statement_list • statement
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 5
+    T_PRINT       shift, and go to state 6
+    T_FUNC        shift, and go to state 7
+    T_RETURN      shift, and go to state 8
+    T_IF          shift, and go to state 9
+    T_FOR         shift, and go to state 10
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+    T_LBRACE      shift, and go to state 15
+
+    $default  reduce using rule 1 (program)
+
+    statement             go to state 16
+    block                 go to state 17
+    assignment_statement  go to state 18
+    function_definition   go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    primary_expression    go to state 23
+    function_call         go to state 24
+    range_call            go to state 25
+    pipeline_expression   go to state 26
+    print_operation       go to state 27
+    if_statement          go to state 28
+    for_statement         go to state 29
+    return_statement      go to state 30
+
+
+State 3
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 4
+
+   32 primary_expression: T_NUMBER •
+
+    $default  reduce using rule 32 (primary_expression)
+
+
+State 5
+
+   15 assignment_statement: T_IDENTIFIER • T_ASSIGN expression
+   33 primary_expression: T_IDENTIFIER •
+   38 function_call: T_IDENTIFIER • T_LPAREN arg_list_opt T_RPAREN
+
+    T_ASSIGN  shift, and go to state 31
+    T_LPAREN  shift, and go to state 32
+
+    T_LPAREN  [reduce using rule 33 (primary_expression)]
+    $default  reduce using rule 33 (primary_expression)
+
+
+State 6
+
+   51 print_operation: T_PRINT • T_LPAREN expression T_RPAREN
+
+    T_LPAREN  shift, and go to state 33
+
+
+State 7
+
+   16 function_definition: T_FUNC • T_IDENTIFIER T_LPAREN param_list_opt T_RPAREN block
+
+    T_IDENTIFIER  shift, and go to state 34
+
+
+State 8
+
+   55 return_statement: T_RETURN • expression
+   56                 | T_RETURN •
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    T_NUMBER      [reduce using rule 56 (return_statement)]
+    T_IDENTIFIER  [reduce using rule 56 (return_statement)]
+    T_PRINT       [reduce using rule 56 (return_statement)]
+    T_RANGE       [reduce using rule 56 (return_statement)]
+    T_MINUS       [reduce using rule 56 (return_statement)]
+    T_NOT         [reduce using rule 56 (return_statement)]
+    T_LPAREN      [reduce using rule 56 (return_statement)]
+    $default      reduce using rule 56 (return_statement)
+
+    expression          go to state 36
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 9
+
+   52 if_statement: T_IF • expression block
+   53             | T_IF • expression block T_ELSE block
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 38
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 10
+
+   54 for_statement: T_FOR • range_call T_EACH block
+
+    T_RANGE  shift, and go to state 11
+
+    range_call  go to state 39
+
+
+State 11
+
+   44 range_call: T_RANGE • T_LPAREN expression T_COMMA expression T_RPAREN
+
+    T_LPAREN  shift, and go to state 40
+
+
+State 12
+
+   31 factor: T_MINUS • factor
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    factor              go to state 41
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 13
+
+   30 factor: T_NOT • factor
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    factor              go to state 42
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 14
+
+   34 primary_expression: T_LPAREN • expression T_RPAREN
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 43
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 15
+
+   14 block: T_LBRACE • statement_list T_RBRACE
+
+    $default  reduce using rule 2 (statement_list)
+
+    statement_list  go to state 44
+
+
+State 16
+
+    3 statement_list: statement_list statement •
+
+    $default  reduce using rule 3 (statement_list)
+
+
+State 17
+
+   11 statement: block •
+
+    $default  reduce using rule 11 (statement)
+
+
+State 18
+
+    4 statement: assignment_statement • optional_semicolon
+
+    T_SEMICOLON  shift, and go to state 45
+
+    $default  reduce using rule 12 (optional_semicolon)
+
+    optional_semicolon  go to state 46
+
+
+State 19
+
+    5 statement: function_definition •
+
+    $default  reduce using rule 5 (statement)
+
+
+State 20
+
+    7 statement: expression • optional_semicolon
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+
+    T_PLUS       shift, and go to state 47
+    T_MINUS      shift, and go to state 48
+    T_EQ         shift, and go to state 49
+    T_NEQ        shift, and go to state 50
+    T_LT         shift, and go to state 51
+    T_GT         shift, and go to state 52
+    T_LTE        shift, and go to state 53
+    T_GTE        shift, and go to state 54
+    T_AND        shift, and go to state 55
+    T_OR         shift, and go to state 56
+    T_SEMICOLON  shift, and go to state 45
+
+    T_MINUS   [reduce using rule 12 (optional_semicolon)]
+    $default  reduce using rule 12 (optional_semicolon)
+
+    optional_semicolon  go to state 57
+    comparison_op       go to state 58
+    additive_op         go to state 59
+    logical_and_op      go to state 60
+    logical_or_op       go to state 61
+
+
+State 21
+
+   22 expression: term •
+   28 term: term • multiplicative_op factor
+
+    T_MULTIPLY  shift, and go to state 62
+    T_DIVIDE    shift, and go to state 63
+
+    $default  reduce using rule 22 (expression)
+
+    multiplicative_op  go to state 64
+
+
+State 22
+
+   27 term: factor •
+
+    $default  reduce using rule 27 (term)
+
+
+State 23
+
+   29 factor: primary_expression •
+   45 pipeline_expression: primary_expression • T_PIPE piped_operation
+
+    T_PIPE  shift, and go to state 65
+
+    $default  reduce using rule 29 (factor)
+
+
+State 24
+
+   35 primary_expression: function_call •
+
+    $default  reduce using rule 35 (primary_expression)
+
+
+State 25
+
+   36 primary_expression: range_call •
+
+    $default  reduce using rule 36 (primary_expression)
+
+
+State 26
+
+    6 statement: pipeline_expression • optional_semicolon
+   46 pipeline_expression: pipeline_expression • T_PIPE piped_operation
+
+    T_PIPE       shift, and go to state 66
+    T_SEMICOLON  shift, and go to state 45
+
+    $default  reduce using rule 12 (optional_semicolon)
+
+    optional_semicolon  go to state 67
+
+
+State 27
+
+   37 primary_expression: print_operation •
+
+    $default  reduce using rule 37 (primary_expression)
+
+
+State 28
+
+    8 statement: if_statement •
+
+    $default  reduce using rule 8 (statement)
+
+
+State 29
+
+    9 statement: for_statement •
+
+    $default  reduce using rule 9 (statement)
+
+
+State 30
+
+   10 statement: return_statement • optional_semicolon
+
+    T_SEMICOLON  shift, and go to state 45
+
+    $default  reduce using rule 12 (optional_semicolon)
+
+    optional_semicolon  go to state 68
+
+
+State 31
+
+   15 assignment_statement: T_IDENTIFIER T_ASSIGN • expression
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 69
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 32
+
+   38 function_call: T_IDENTIFIER T_LPAREN • arg_list_opt T_RPAREN
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    $default  reduce using rule 39 (arg_list_opt)
+
+    expression          go to state 70
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    arg_list_opt        go to state 71
+    arg_list            go to state 72
+    non_empty_arg_list  go to state 73
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 33
+
+   51 print_operation: T_PRINT T_LPAREN • expression T_RPAREN
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 74
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 34
+
+   16 function_definition: T_FUNC T_IDENTIFIER • T_LPAREN param_list_opt T_RPAREN block
+
+    T_LPAREN  shift, and go to state 75
+
+
+State 35
+
+   33 primary_expression: T_IDENTIFIER •
+   38 function_call: T_IDENTIFIER • T_LPAREN arg_list_opt T_RPAREN
+
+    T_LPAREN  shift, and go to state 32
+
+    T_LPAREN  [reduce using rule 33 (primary_expression)]
+    $default  reduce using rule 33 (primary_expression)
+
+
+State 36
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   55 return_statement: T_RETURN expression •
+
+    T_PLUS   shift, and go to state 47
+    T_MINUS  shift, and go to state 48
+    T_EQ     shift, and go to state 49
+    T_NEQ    shift, and go to state 50
+    T_LT     shift, and go to state 51
+    T_GT     shift, and go to state 52
+    T_LTE    shift, and go to state 53
+    T_GTE    shift, and go to state 54
+    T_AND    shift, and go to state 55
+    T_OR     shift, and go to state 56
+
+    T_MINUS   [reduce using rule 55 (return_statement)]
+    $default  reduce using rule 55 (return_statement)
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 37
+
+   29 factor: primary_expression •
+
+    $default  reduce using rule 29 (factor)
+
+
+State 38
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   52 if_statement: T_IF expression • block
+   53             | T_IF expression • block T_ELSE block
+
+    T_PLUS    shift, and go to state 47
+    T_MINUS   shift, and go to state 48
+    T_EQ      shift, and go to state 49
+    T_NEQ     shift, and go to state 50
+    T_LT      shift, and go to state 51
+    T_GT      shift, and go to state 52
+    T_LTE     shift, and go to state 53
+    T_GTE     shift, and go to state 54
+    T_AND     shift, and go to state 55
+    T_OR      shift, and go to state 56
+    T_LBRACE  shift, and go to state 15
+
+    block           go to state 76
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 39
+
+   54 for_statement: T_FOR range_call • T_EACH block
+
+    T_EACH  shift, and go to state 77
+
+
+State 40
+
+   44 range_call: T_RANGE T_LPAREN • expression T_COMMA expression T_RPAREN
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 78
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 41
+
+   31 factor: T_MINUS factor •
+
+    $default  reduce using rule 31 (factor)
+
+
+State 42
+
+   30 factor: T_NOT factor •
+
+    $default  reduce using rule 30 (factor)
+
+
+State 43
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   34 primary_expression: T_LPAREN expression • T_RPAREN
+
+    T_PLUS    shift, and go to state 47
+    T_MINUS   shift, and go to state 48
+    T_EQ      shift, and go to state 49
+    T_NEQ     shift, and go to state 50
+    T_LT      shift, and go to state 51
+    T_GT      shift, and go to state 52
+    T_LTE     shift, and go to state 53
+    T_GTE     shift, and go to state 54
+    T_AND     shift, and go to state 55
+    T_OR      shift, and go to state 56
+    T_RPAREN  shift, and go to state 79
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 44
+
+    3 statement_list: statement_list • statement
+   14 block: T_LBRACE statement_list • T_RBRACE
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 5
+    T_PRINT       shift, and go to state 6
+    T_FUNC        shift, and go to state 7
+    T_RETURN      shift, and go to state 8
+    T_IF          shift, and go to state 9
+    T_FOR         shift, and go to state 10
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+    T_LBRACE      shift, and go to state 15
+    T_RBRACE      shift, and go to state 80
+
+    statement             go to state 16
+    block                 go to state 17
+    assignment_statement  go to state 18
+    function_definition   go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    primary_expression    go to state 23
+    function_call         go to state 24
+    range_call            go to state 25
+    pipeline_expression   go to state 26
+    print_operation       go to state 27
+    if_statement          go to state 28
+    for_statement         go to state 29
+    return_statement      go to state 30
+
+
+State 45
+
+   13 optional_semicolon: T_SEMICOLON •
+
+    $default  reduce using rule 13 (optional_semicolon)
+
+
+State 46
+
+    4 statement: assignment_statement optional_semicolon •
+
+    $default  reduce using rule 4 (statement)
+
+
+State 47
+
+   63 additive_op: T_PLUS •
+
+    $default  reduce using rule 63 (additive_op)
+
+
+State 48
+
+   64 additive_op: T_MINUS •
+
+    $default  reduce using rule 64 (additive_op)
+
+
+State 49
+
+   57 comparison_op: T_EQ •
+
+    $default  reduce using rule 57 (comparison_op)
+
+
+State 50
+
+   58 comparison_op: T_NEQ •
+
+    $default  reduce using rule 58 (comparison_op)
+
+
+State 51
+
+   59 comparison_op: T_LT •
+
+    $default  reduce using rule 59 (comparison_op)
+
+
+State 52
+
+   60 comparison_op: T_GT •
+
+    $default  reduce using rule 60 (comparison_op)
+
+
+State 53
+
+   61 comparison_op: T_LTE •
+
+    $default  reduce using rule 61 (comparison_op)
+
+
+State 54
+
+   62 comparison_op: T_GTE •
+
+    $default  reduce using rule 62 (comparison_op)
+
+
+State 55
+
+   67 logical_and_op: T_AND •
+
+    $default  reduce using rule 67 (logical_and_op)
+
+
+State 56
+
+   68 logical_or_op: T_OR •
+
+    $default  reduce using rule 68 (logical_or_op)
+
+
+State 57
+
+    7 statement: expression optional_semicolon •
+
+    $default  reduce using rule 7 (statement)
+
+
+State 58
+
+   24 expression: expression comparison_op • term
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    term                go to state 81
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 59
+
+   23 expression: expression additive_op • term
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    term                go to state 82
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 60
+
+   25 expression: expression logical_and_op • term
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    term                go to state 83
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 61
+
+   26 expression: expression logical_or_op • term
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    term                go to state 84
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 62
+
+   65 multiplicative_op: T_MULTIPLY •
+
+    $default  reduce using rule 65 (multiplicative_op)
+
+
+State 63
+
+   66 multiplicative_op: T_DIVIDE •
+
+    $default  reduce using rule 66 (multiplicative_op)
+
+
+State 64
+
+   28 term: term multiplicative_op • factor
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    factor              go to state 85
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 65
+
+   45 pipeline_expression: primary_expression T_PIPE • piped_operation
+
+    T_IDENTIFIER  shift, and go to state 86
+    T_PRINT       shift, and go to state 87
+    T_IF          shift, and go to state 9
+    T_FOR         shift, and go to state 88
+
+    function_call    go to state 89
+    piped_operation  go to state 90
+    if_statement     go to state 91
+
+
+State 66
+
+   46 pipeline_expression: pipeline_expression T_PIPE • piped_operation
+
+    T_IDENTIFIER  shift, and go to state 86
+    T_PRINT       shift, and go to state 87
+    T_IF          shift, and go to state 9
+    T_FOR         shift, and go to state 88
+
+    function_call    go to state 89
+    piped_operation  go to state 92
+    if_statement     go to state 91
+
+
+State 67
+
+    6 statement: pipeline_expression optional_semicolon •
+
+    $default  reduce using rule 6 (statement)
+
+
+State 68
+
+   10 statement: return_statement optional_semicolon •
+
+    $default  reduce using rule 10 (statement)
+
+
+State 69
+
+   15 assignment_statement: T_IDENTIFIER T_ASSIGN expression •
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+
+    T_PLUS  shift, and go to state 47
+    T_EQ    shift, and go to state 49
+    T_NEQ   shift, and go to state 50
+    T_LT    shift, and go to state 51
+    T_GT    shift, and go to state 52
+    T_LTE   shift, and go to state 53
+    T_GTE   shift, and go to state 54
+    T_AND   shift, and go to state 55
+    T_OR    shift, and go to state 56
+
+    $default  reduce using rule 15 (assignment_statement)
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 70
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   42 non_empty_arg_list: expression •
+
+    T_PLUS   shift, and go to state 47
+    T_MINUS  shift, and go to state 48
+    T_EQ     shift, and go to state 49
+    T_NEQ    shift, and go to state 50
+    T_LT     shift, and go to state 51
+    T_GT     shift, and go to state 52
+    T_LTE    shift, and go to state 53
+    T_GTE    shift, and go to state 54
+    T_AND    shift, and go to state 55
+    T_OR     shift, and go to state 56
+
+    $default  reduce using rule 42 (non_empty_arg_list)
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 71
+
+   38 function_call: T_IDENTIFIER T_LPAREN arg_list_opt • T_RPAREN
+
+    T_RPAREN  shift, and go to state 93
+
+
+State 72
+
+   40 arg_list_opt: arg_list •
+
+    $default  reduce using rule 40 (arg_list_opt)
+
+
+State 73
+
+   41 arg_list: non_empty_arg_list •
+   43 non_empty_arg_list: non_empty_arg_list • T_COMMA expression
+
+    T_COMMA  shift, and go to state 94
+
+    $default  reduce using rule 41 (arg_list)
+
+
+State 74
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   51 print_operation: T_PRINT T_LPAREN expression • T_RPAREN
+
+    T_PLUS    shift, and go to state 47
+    T_MINUS   shift, and go to state 48
+    T_EQ      shift, and go to state 49
+    T_NEQ     shift, and go to state 50
+    T_LT      shift, and go to state 51
+    T_GT      shift, and go to state 52
+    T_LTE     shift, and go to state 53
+    T_GTE     shift, and go to state 54
+    T_AND     shift, and go to state 55
+    T_OR      shift, and go to state 56
+    T_RPAREN  shift, and go to state 95
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 75
+
+   16 function_definition: T_FUNC T_IDENTIFIER T_LPAREN • param_list_opt T_RPAREN block
+
+    T_IDENTIFIER  shift, and go to state 96
+
+    $default  reduce using rule 17 (param_list_opt)
+
+    param_list_opt        go to state 97
+    param_list            go to state 98
+    non_empty_param_list  go to state 99
+
+
+State 76
+
+   52 if_statement: T_IF expression block •
+   53             | T_IF expression block • T_ELSE block
+
+    T_ELSE  shift, and go to state 100
+
+    $default  reduce using rule 52 (if_statement)
+
+
+State 77
+
+   54 for_statement: T_FOR range_call T_EACH • block
+
+    T_LBRACE  shift, and go to state 15
+
+    block  go to state 101
+
+
+State 78
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   44 range_call: T_RANGE T_LPAREN expression • T_COMMA expression T_RPAREN
+
+    T_PLUS   shift, and go to state 47
+    T_MINUS  shift, and go to state 48
+    T_EQ     shift, and go to state 49
+    T_NEQ    shift, and go to state 50
+    T_LT     shift, and go to state 51
+    T_GT     shift, and go to state 52
+    T_LTE    shift, and go to state 53
+    T_GTE    shift, and go to state 54
+    T_AND    shift, and go to state 55
+    T_OR     shift, and go to state 56
+    T_COMMA  shift, and go to state 102
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 79
+
+   34 primary_expression: T_LPAREN expression T_RPAREN •
+
+    $default  reduce using rule 34 (primary_expression)
+
+
+State 80
+
+   14 block: T_LBRACE statement_list T_RBRACE •
+
+    $default  reduce using rule 14 (block)
+
+
+State 81
+
+   24 expression: expression comparison_op term •
+   28 term: term • multiplicative_op factor
+
+    T_MULTIPLY  shift, and go to state 62
+    T_DIVIDE    shift, and go to state 63
+
+    $default  reduce using rule 24 (expression)
+
+    multiplicative_op  go to state 64
+
+
+State 82
+
+   23 expression: expression additive_op term •
+   28 term: term • multiplicative_op factor
+
+    T_MULTIPLY  shift, and go to state 62
+    T_DIVIDE    shift, and go to state 63
+
+    $default  reduce using rule 23 (expression)
+
+    multiplicative_op  go to state 64
+
+
+State 83
+
+   25 expression: expression logical_and_op term •
+   28 term: term • multiplicative_op factor
+
+    T_MULTIPLY  shift, and go to state 62
+    T_DIVIDE    shift, and go to state 63
+
+    $default  reduce using rule 25 (expression)
+
+    multiplicative_op  go to state 64
+
+
+State 84
+
+   26 expression: expression logical_or_op term •
+   28 term: term • multiplicative_op factor
+
+    T_MULTIPLY  shift, and go to state 62
+    T_DIVIDE    shift, and go to state 63
+
+    $default  reduce using rule 26 (expression)
+
+    multiplicative_op  go to state 64
+
+
+State 85
+
+   28 term: term multiplicative_op factor •
+
+    $default  reduce using rule 28 (term)
+
+
+State 86
+
+   38 function_call: T_IDENTIFIER • T_LPAREN arg_list_opt T_RPAREN
+
+    T_LPAREN  shift, and go to state 32
+
+
+State 87
+
+   50 piped_operation: T_PRINT • T_LPAREN T_RPAREN
+
+    T_LPAREN  shift, and go to state 103
+
+
+State 88
+
+   49 piped_operation: T_FOR • T_EACH block
+
+    T_EACH  shift, and go to state 104
+
+
+State 89
+
+   47 piped_operation: function_call •
+
+    $default  reduce using rule 47 (piped_operation)
+
+
+State 90
+
+   45 pipeline_expression: primary_expression T_PIPE piped_operation •
+
+    $default  reduce using rule 45 (pipeline_expression)
+
+
+State 91
+
+   48 piped_operation: if_statement •
+
+    $default  reduce using rule 48 (piped_operation)
+
+
+State 92
+
+   46 pipeline_expression: pipeline_expression T_PIPE piped_operation •
+
+    $default  reduce using rule 46 (pipeline_expression)
+
+
+State 93
+
+   38 function_call: T_IDENTIFIER T_LPAREN arg_list_opt T_RPAREN •
+
+    $default  reduce using rule 38 (function_call)
+
+
+State 94
+
+   43 non_empty_arg_list: non_empty_arg_list T_COMMA • expression
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 105
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 95
+
+   51 print_operation: T_PRINT T_LPAREN expression T_RPAREN •
+
+    $default  reduce using rule 51 (print_operation)
+
+
+State 96
+
+   20 non_empty_param_list: T_IDENTIFIER •
+
+    $default  reduce using rule 20 (non_empty_param_list)
+
+
+State 97
+
+   16 function_definition: T_FUNC T_IDENTIFIER T_LPAREN param_list_opt • T_RPAREN block
+
+    T_RPAREN  shift, and go to state 106
+
+
+State 98
+
+   18 param_list_opt: param_list •
+
+    $default  reduce using rule 18 (param_list_opt)
+
+
+State 99
+
+   19 param_list: non_empty_param_list •
+   21 non_empty_param_list: non_empty_param_list • T_COMMA T_IDENTIFIER
+
+    T_COMMA  shift, and go to state 107
+
+    $default  reduce using rule 19 (param_list)
+
+
+State 100
+
+   53 if_statement: T_IF expression block T_ELSE • block
+
+    T_LBRACE  shift, and go to state 15
+
+    block  go to state 108
+
+
+State 101
+
+   54 for_statement: T_FOR range_call T_EACH block •
+
+    $default  reduce using rule 54 (for_statement)
+
+
+State 102
+
+   44 range_call: T_RANGE T_LPAREN expression T_COMMA • expression T_RPAREN
+
+    T_NUMBER      shift, and go to state 4
+    T_IDENTIFIER  shift, and go to state 35
+    T_PRINT       shift, and go to state 6
+    T_RANGE       shift, and go to state 11
+    T_MINUS       shift, and go to state 12
+    T_NOT         shift, and go to state 13
+    T_LPAREN      shift, and go to state 14
+
+    expression          go to state 109
+    term                go to state 21
+    factor              go to state 22
+    primary_expression  go to state 37
+    function_call       go to state 24
+    range_call          go to state 25
+    print_operation     go to state 27
+
+
+State 103
+
+   50 piped_operation: T_PRINT T_LPAREN • T_RPAREN
+
+    T_RPAREN  shift, and go to state 110
+
+
+State 104
+
+   49 piped_operation: T_FOR T_EACH • block
+
+    T_LBRACE  shift, and go to state 15
+
+    block  go to state 111
+
+
+State 105
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   43 non_empty_arg_list: non_empty_arg_list T_COMMA expression •
+
+    T_PLUS   shift, and go to state 47
+    T_MINUS  shift, and go to state 48
+    T_EQ     shift, and go to state 49
+    T_NEQ    shift, and go to state 50
+    T_LT     shift, and go to state 51
+    T_GT     shift, and go to state 52
+    T_LTE    shift, and go to state 53
+    T_GTE    shift, and go to state 54
+    T_AND    shift, and go to state 55
+    T_OR     shift, and go to state 56
+
+    $default  reduce using rule 43 (non_empty_arg_list)
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 106
+
+   16 function_definition: T_FUNC T_IDENTIFIER T_LPAREN param_list_opt T_RPAREN • block
+
+    T_LBRACE  shift, and go to state 15
+
+    block  go to state 112
+
+
+State 107
+
+   21 non_empty_param_list: non_empty_param_list T_COMMA • T_IDENTIFIER
+
+    T_IDENTIFIER  shift, and go to state 113
+
+
+State 108
+
+   53 if_statement: T_IF expression block T_ELSE block •
+
+    $default  reduce using rule 53 (if_statement)
+
+
+State 109
+
+   23 expression: expression • additive_op term
+   24           | expression • comparison_op term
+   25           | expression • logical_and_op term
+   26           | expression • logical_or_op term
+   44 range_call: T_RANGE T_LPAREN expression T_COMMA expression • T_RPAREN
+
+    T_PLUS    shift, and go to state 47
+    T_MINUS   shift, and go to state 48
+    T_EQ      shift, and go to state 49
+    T_NEQ     shift, and go to state 50
+    T_LT      shift, and go to state 51
+    T_GT      shift, and go to state 52
+    T_LTE     shift, and go to state 53
+    T_GTE     shift, and go to state 54
+    T_AND     shift, and go to state 55
+    T_OR      shift, and go to state 56
+    T_RPAREN  shift, and go to state 114
+
+    comparison_op   go to state 58
+    additive_op     go to state 59
+    logical_and_op  go to state 60
+    logical_or_op   go to state 61
+
+
+State 110
+
+   50 piped_operation: T_PRINT T_LPAREN T_RPAREN •
+
+    $default  reduce using rule 50 (piped_operation)
+
+
+State 111
+
+   49 piped_operation: T_FOR T_EACH block •
+
+    $default  reduce using rule 49 (piped_operation)
+
+
+State 112
+
+   16 function_definition: T_FUNC T_IDENTIFIER T_LPAREN param_list_opt T_RPAREN block •
+
+    $default  reduce using rule 16 (function_definition)
+
+
+State 113
+
+   21 non_empty_param_list: non_empty_param_list T_COMMA T_IDENTIFIER •
+
+    $default  reduce using rule 21 (non_empty_param_list)
+
+
+State 114
+
+   44 range_call: T_RANGE T_LPAREN expression T_COMMA expression T_RPAREN •
+
+    $default  reduce using rule 44 (range_call)

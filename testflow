@@ -1,0 +1,78 @@
+cat << 'EOF' > test.flow
+// Paste the full test.flow content here
+// --- Basic Setup ---
+func double(x) { return x * 2; }
+func add(a, b) { return a + b; }
+func is_even(n) {
+  return n > 3;
+}
+"--- Testing IF/ELSE ---" |> print(); // Won't print string yet
+
+// --- Standalone If/Else ---
+testVal1 = 7;
+testVal2 = 2;
+
+"Test 1 (Standalone If - Then):" |> print(); // Won't print string yet
+if testVal1 > 5 {
+  // "Value was > 5" |> print();
+  testVal1 |> print(); // Expect 7
+} else {
+  // "Value was <= 5" |> print();
+  testVal1 |> print();
+}
+
+"Test 2 (Standalone If - Else):" |> print(); // Won't print string yet
+if testVal2 > 5 {
+  // "Value was > 5" |> print();
+  testVal2 |> print();
+} else {
+  // "Value was <= 5" |> print();
+  testVal2 |> print(); // Expect 2
+}
+
+// --- Pipelined If/Else ---
+"Test 3 (Piped If - Then):" |> print(); // Won't print string yet
+val_pipe_if_1 = 7;
+val_pipe_if_1 |> if val_pipe_if_1 > 5 {
+    // "PipeIf1: Doubling" |> print();
+    doubled_res = val_pipe_if_1 |> double();
+    doubled_res |> print(); // Expect 14
+} else {
+    // "PipeIf1: Adding" |> print();
+    added_res = val_pipe_if_1 |> add(1);
+    added_res |> print();
+}
+
+"Test 4 (Piped If - Else):" |> print(); // Won't print string yet
+val_pipe_if_2 = 4;
+ val_pipe_if_2 |> if val_pipe_if_2 > 5 {
+    // "PipeIf2: Doubling" |> print();
+    doubled_res2 = val_pipe_if_2 |> double();
+    doubled_res2 |> print();
+} else {
+    // "PipeIf2: Adding" |> print();
+    added_res2 = val_pipe_if_2 |> add(1);
+    added_res2 |> print(); // Expect 5
+}
+
+// --- Testing FOR Loops ---
+"--- Testing FOR ---" |> print(); // Won't print string yet
+
+"Test 5 (Standalone For):" |> print(); // Won't print string yet
+for range(1, 4) each { // 1, 2, 3
+  // "Loop item:" |> print();
+  item |> print();
+  item_doubled = item |> double();
+  // "Item doubled:" |> print();
+  item_doubled |> print();
+}
+
+"Test 6 (Pipelined For):" |> print(); // Won't print string yet
+range(5, 8) |> for each { // 5, 6, 7
+   // "PipeLoop item:" |> print();
+   item |> print();
+   item |> double() |> print();
+}
+
+"--- Tests Complete ---" |> print(); // Won't print string yet
+EOF
